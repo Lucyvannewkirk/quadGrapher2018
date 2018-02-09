@@ -72,8 +72,8 @@
           <p class="formInfo">Coefficients go here<br>
 
             a = <input size="5" type="text" id="quadA" value="1"> <br>
-            b = <input size="5" type="text" id="linB" value="0"> <br>
-            c = <input size="5" type="text" id="constant" value="0"> <br>
+            b = <input size="5" type="text" id="linB" value="2"> <br>
+            c = <input size="5" type="text" id="constant" value="-2"> <br>
             <button class="btn" onclick="QF()">Submit Values</button>
           </p>
         </div>
@@ -81,12 +81,17 @@
       <div class="col-sm-8 text-left"> 
         <canvas class="canvasGrids" id="mycanvas"></canvas>
       </div> 
-      <div class="col-sm-1">
-        <p id="solution1">x-int</p>
-        <p id="solution2">x-int</p>
+      <div class="col-sm-2">
+        <p id="solution1">x-int at (?,0)</p>
+        <p id="solution2">x-int at (?,0)</p>
+        <p id= "yint">y-int at (0,?)</p>
+        <p id= "cp">Corresponding point at (?,?)</p>
         <p id="vertex"> vertex</p>
-        <p>Symmetry line</p>
-        <p> Corresponding point a</p>
+        <p id= "sline">Symmetry line is (0,0)</p>
+
+        <button type="button" class="btn btn-primary btn-sm" onclick = "zoomIn()">+</button> 
+        <button type="button" class="btn btn-primary btn-sm" onclick = "zoomOut()">-</button>
+        
         
       </div>
     </div>
