@@ -7,6 +7,10 @@ function init() {
   w = canvas.width = 600;
   h = canvas.height = 400;
   console.log('canvas is loaded into context',w);
+  canvasOffset = canvas.getBoundingClientRect();
+  offsetX = Math.round(canvasOffset.left),
+  offsetY = Math.round(canvasOffset.top); 
+  canvas.addEventListener("mousemove", doMouseMove, false);
   graphpaper();
 }  // close init
 
@@ -15,13 +19,19 @@ function QF() {
   a = $("#quadA").val();
   b = $("#linB").val();
   c = $("#constant").val();
-  x1 = (-b+Math.sqrt(b**2-4*a*c))/(2*a);
-  x1 = Math.round (x1*10000)/ 10000;
-  x2 = (-b-Math.sqrt(b**2-4*a*c))/(2*a);
-  x2 = Math.round (x2 *10000) / 10000;
+  if (b**2-4*a*c<0) {
+       $("#solution1").text ("No Xintercept");
+    $("#solution2").text ("No Xintercept");
+  }
+  else {
+    x1 = (-b+Math.sqrt(b**2-4*a*c))/(2*a);
+    x1 = Math.round (x1*10000)/ 10000;
+    x2 = (-b-Math.sqrt(b**2-4*a*c))/(2*a);
+    x2 = Math.round (x2 *10000) / 10000;
 
-   $("#solution1").text ("Xintercept is at "+x1);
-  $("#solution2").text ("Xintercept is at "+x2);
+     $("#solution1").text ("Xintercept is at "+x1);
+    $("#solution2").text ("Xintercept is at "+x2);
+  }
   console.log(a,b,c);
   graphQuad();
   results();
@@ -50,12 +60,12 @@ function results() {
   context.fill();
 
 
-  $("cp").text("Corr. Pt. is at ("+cp+","+ c+")");
+  $("#cp").text("Corr. Pt. is at ("+vX*2+","+ c+")");
   context.beginPath();
   context.arc(w/2+2*vX*k,h/2-c*k,3,0,6.28);
   context.fill();
 
-  $("sline").text("Symmetry line is at x= "+ vX);
+  $("#sline").text("Symmetry line is at x= "+ vX);
 
 
 
@@ -139,14 +149,16 @@ function graphQuad () {
 }
     function zoomIn () {
       k=k+3;
-      init();
-      graphQuad();
-      results();
-      QF();
+      resetCanvas();
     }
 
       function zoomOut () {
         k=k-3;
+        if (k<5) {k=5}
+     resetCanvas();
+   }
+
+      function resetCanvas () {
       init();
       graphQuad();
       results();
@@ -154,5 +166,24 @@ function graphQuad () {
       }
 
 
+      function doMouseMove(event) {
+    // always know where ther mouse is located
+        resetCanvas();
+        context.fillStyle= "purple"
+        mouseX = event.clientX-offsetX;
+        mouseY = event.clientY-offsetY;
+        pointX = (mouseX-w/2)/k;
+        pointY = a*Math.pow(pointX,2)+b*pointX+c*1;
+        pointX =  pointX.toFixed(2);
+        pointY =  pointY.toFixed(2);
+        console.log(mouseX,mouseY, pointX, pointY, offsetY, offsetX);
+        context.beginPath();
+        context.arc(mouseX,h/2-pointY*k,5,0,2*Math.PI);
+        context.fill(); 
+        $("#point").text("Point on the curve: ("+pointX+","+pointY+")");
+        // context.clearRect(0,0,w,h);
+        // graphpaper();
+        // graphQuad();
+}  // end doMouseMove
 
  
